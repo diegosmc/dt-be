@@ -26,6 +26,7 @@ npm install
 Crie um arquivo .env na raiz do projeto e adicione as variáveis de ambiente necessárias. Exemplo:
     
 ## DATABASE_URL="postgresql://postgres:senha@endereco-do-banco:5432/nome-do-banco"
+## PORT=5000
 
 Execute as migrações do Prisma para criar as tabelas do banco de dados:
 
