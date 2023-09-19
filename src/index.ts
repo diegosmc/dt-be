@@ -7,6 +7,8 @@ import { CustomerData } from "./interfaces/CustomerData"
 import { PaymentData } from "./interfaces/PaymentData"
 import { FoodData } from "./interfaces/FoodData"
 
+import Checkout from './services/Checkout';
+
 dotenv.config();
 
 const app: Express = express();
@@ -19,7 +21,7 @@ app.use(cors())
 app.get('/', (req: Request, res: Response) => {
   const { message } = req.body
 
-  if (!message) return res.status(400).send({ error: "Message is required"})
+  if (!message) return res.status(400).send({ error: "Opa, uma mensgem é desejada"})
   
   res.send({ message })
 })
@@ -27,7 +29,7 @@ app.get('/', (req: Request, res: Response) => {
 app.get("/foods", async (req: Request, res: Response) => {
   const { food } = req.query
 
-  if (!food) return res.status(400).send({ error: "Food parameter is required"})
+  if (!food) return res.status(400).send({ error: "Opa, falta um parâmetro"})
 
   const foods = await prisma.food.findMany({
     where: {
@@ -48,7 +50,7 @@ app.get("/orders/:id", async (req: Request, res: Response) => {
     },
   })
 
-  if (!order) return res.status(404).send({ error: "Order not found" })
+  if (!order) return res.status(404).send({ error: "Pedido não encontrado" })
 
   res.send(order)
 })
@@ -63,6 +65,9 @@ interface CheckoutRequest extends Request {
 
 app.post("/checkout", async (req: CheckoutRequest, res: Response) => {
   const { cart, customer, payment } = req.body
+
+  const checkout = new Checkout()
+  checkout.process(cart, customer, payment)
 })
 
 
